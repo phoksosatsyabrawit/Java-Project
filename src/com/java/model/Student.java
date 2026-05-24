@@ -13,6 +13,12 @@ public class Student {
         this.grade = grade;
     }
 
+    public Student(String name, String gender, int grade) {
+        this.name = name;
+        this.gender = gender;
+        this.grade = grade; 
+    }
+
     // Getters and setters
     public int getId() {
         return id;

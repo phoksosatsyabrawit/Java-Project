@@ -1,14 +1,20 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
+
+import com.java.model.Student;
+import com.java.service.StudentService;
 
 public class App {
     private Connection connection;
+    private static StudentService studentService;
 
     public App() {
         connection = gConnection();
+        studentService = new StudentService(connection);
     }
-    
+
     public static void main(String[] args) throws Exception {
         App app = new App();
     }
@@ -20,7 +26,6 @@ public class App {
         try{
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, user, passwd);
-            System.out.println("Connection established successfully!");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
