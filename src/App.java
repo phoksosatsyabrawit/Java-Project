@@ -17,6 +17,7 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         App app = new App();
+        studentService.deleteStudent(4);
     }
     
     private Connection gConnection(){
@@ -30,5 +31,10 @@ public class App {
             e.printStackTrace();
         }
         return connection;
+    }
+
+    private void insert(String name, String gender, int grade){
+        Student student = new Student(name, gender, grade);
+        studentService.insertStudent(student);
     }
 }

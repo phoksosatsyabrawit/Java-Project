@@ -42,6 +42,22 @@ public class StudentService {
         return null;
     }
 
+    public List<Student> selectAllStudents(){
+        List<Student> students = new ArrayList<>();
+        String sql = "SELECT * FROM students";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                students.add(getResultSet(resultSet));
+            }
+            return students;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void insertStudent(Student student) {
         String sql = "INSERT INTO students (name, gender, grade) VALUES (?, ?, ?)";
         try{
@@ -53,6 +69,39 @@ public class StudentService {
             System.out.println("Insert affected rows.");
         }catch(SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    public void updateStudent(int idToFind, Student student) {
+        String sql = "UPDATE students SET name = ?, gender = ?, grade = ? WHERE id = ?";
+        Student findStudent = selectStudentById(idToFind);
+        if(findStudent != null){
+            try{
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, student.getName());
+                preparedStatement.setString(2, student.getGender());
+                preparedStatement.setInt(3, student.getGrade());
+                preparedStatement.setInt(4, idToFind);
+                preparedStatement.executeUpdate();
+                System.out.println("Update affected rows.");
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void deleteStudent(int idToFind) {
+        String sql = "DELETE FROM students WHERE id = ?";
+        Student findStudent = selectStudentById(idToFind);
+        if(findStudent != null){
+            try{
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, idToFind);
+                preparedStatement.executeUpdate();
+                System.out.println("Delete affected rows.");
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 }
